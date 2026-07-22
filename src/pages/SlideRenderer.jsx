@@ -5,7 +5,7 @@ import CodeEditor from '../components/CodeEditor';
 export function IntroPage({ slide }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6">
-      {/* Logo */}
+      
       <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-kotlin-purple via-kotlin-violet to-kotlin-orange flex items-center justify-center mb-6 shadow-2xl shadow-kotlin-purple/40">
         <span className="text-4xl font-black text-white">K</span>
       </div>
@@ -37,19 +37,6 @@ export function IntroPage({ slide }) {
           </div>
         ))}
       </div>
-
-      <p className="text-sm text-gray-500">
-        Herramienta:{' '}
-        <a
-          href={slide.toolUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-kotlin-purple hover:text-kotlin-violet transition-colors font-semibold"
-        >
-          {slide.tool}
-        </a>
-        {' '}— sin instalación necesaria
-      </p>
     </div>
   );
 }
@@ -247,18 +234,6 @@ export function ProjectPage({ slide }) {
 
       <div className="px-4 py-3 rounded-xl bg-kotlin-purple/10 border border-kotlin-purple/20 text-sm text-gray-300 leading-relaxed">
         {slide.tip}
-      </div>
-
-      <div className="mt-6 p-4 rounded-xl bg-android-green/5 border border-android-green/20">
-        <p className="text-sm font-semibold text-android-green mb-2">▶ Empieza aquí</p>
-        <a
-          href="https://play.kotlinlang.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-gray-400 hover:text-android-green transition-colors"
-        >
-          play.kotlinlang.org → crea un nuevo archivo y empieza con tu data class
-        </a>
       </div>
     </div>
   );

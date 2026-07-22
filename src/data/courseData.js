@@ -61,6 +61,34 @@ export const modules = [
     ],
   },
   {
+    id: 'modulo2',
+    label: 'MÓDULO II · COMPLEMENTARIO',
+    sessions: [
+      {
+        id: 's5',
+        label: 'Sesión 5',
+        topics: [
+          { id: 'entrada-operadores', label: 'Entrada y operadores' },
+          { id: 'arrays-rangos', label: 'Arrays y rangos' },
+          { id: 'excepciones', label: 'Manejo de errores' },
+          { id: 'ejercicios-s5', label: 'Ejercicios S5', isExercise: true },
+        ],
+      },
+      {
+        id: 's6',
+        label: 'Sesión 6',
+        topics: [
+          { id: 'scope-functions', label: 'Scope Functions' },
+          { id: 'enums-objects', label: 'Enums y Objects' },
+          { id: 'genericos', label: 'Genéricos' },
+          { id: 'paquetes-visibilidad', label: 'Paquetes y visibilidad' },
+          { id: 'pruebas-basicas', label: 'Pruebas básicas' },
+          { id: 'ejercicios-s6', label: 'Ejercicios S6', isExercise: true },
+        ],
+      },
+    ],
+  },
+  {
     id: 'proyecto',
     label: '🏆 Proyecto Final',
     type: 'special',
@@ -75,6 +103,9 @@ export const allTopicIds = [
   'funciones', 'lambdas', 'control-flow', 'ejercicios-s2',
   'colecciones', 'oop-basica', 'data-classes', 'herencia', 'ejercicios-s3',
   'coroutines', 'flows', 'android-basics', 'resumen', 'ejercicios-s4',
+  'entrada-operadores', 'arrays-rangos', 'excepciones', 'ejercicios-s5',
+  'scope-functions', 'enums-objects', 'genericos', 'paquetes-visibilidad',
+  'pruebas-basicas', 'ejercicios-s6',
   'proyecto-final',
 ];
 
@@ -986,6 +1017,431 @@ fun main() {
     mostrar(EstadoPantalla.Loading)
     mostrar(EstadoPantalla.Success(listOf("Item 1", "Item 2")))
     mostrar(EstadoPantalla.Error("Sin conexión"))
+}`,
+      },
+    ],
+  },
+
+  'entrada-operadores': {
+    type: 'lesson',
+    session: 'SESIÓN 5',
+    title: 'Entrada de Datos y Operadores',
+    intro: 'Aprende a recibir información del usuario y a combinar operadores para resolver problemas sencillos desde la consola.',
+    blocks: [
+      {
+        kind: 'code',
+        label: 'Leer datos de forma segura',
+        code: `fun main() {
+    print("¿Cómo te llamas? ")
+    val nombre = readln()
+
+    print("¿Cuántos años tienes? ")
+    val edad = readln().toIntOrNull()
+
+    val mensaje = if (edad != null) {
+        "Hola, $nombre. El próximo año tendrás \${edad + 1}."
+    } else {
+        "Hola, $nombre. La edad ingresada no es válida."
+    }
+
+    println(mensaje)
+}`,
+      },
+      {
+        kind: 'table',
+        title: 'Operadores frecuentes',
+        headers: ['Grupo', 'Operadores', 'Ejemplo'],
+        rows: [
+          ['Aritméticos', '+  -  *  /  %', '7 % 2 == 1'],
+          ['Comparación', '==  !=  <  >  <=  >=', 'edad >= 18'],
+          ['Lógicos', '&&  ||  !', 'activo && !bloqueado'],
+          ['Asignación', '=  +=  -=  *=  /=', 'puntos += 10'],
+          ['Rango y pertenencia', '..  in  !in', 'edad in 18..65'],
+        ],
+      },
+      {
+        kind: 'tip',
+        text: '💡 Prefiere toIntOrNull() sobre toInt() cuando el dato viene del usuario: una entrada inválida produce null en lugar de cerrar el programa.',
+      },
+    ],
+  },
+
+  'arrays-rangos': {
+    type: 'lesson',
+    session: 'SESIÓN 5',
+    title: 'Arrays y Rangos',
+    intro: 'Los arrays almacenan una cantidad fija de elementos. Los rangos representan secuencias y simplifican recorridos y validaciones.',
+    blocks: [
+      {
+        kind: 'code',
+        label: 'Arrays',
+        code: `val notas = arrayOf(90, 78, 85)
+
+println(notas[0])       // 90
+notas[1] = 80           // sus elementos pueden cambiar
+println(notas.size)     // 3
+
+for ((indice, nota) in notas.withIndex()) {
+    println("$indice: $nota")
+}
+
+// Arrays especializados para números
+val edades: IntArray = intArrayOf(18, 21, 30)`,
+      },
+      {
+        kind: 'code',
+        label: 'Rangos y progresiones',
+        code: `val unoACinco = 1..5
+val letras = 'a'..'f'
+
+println(3 in unoACinco)       // true
+println('z' !in letras)       // true
+
+for (numero in 0 until 10 step 2) {
+    print("$numero ")       // 0 2 4 6 8
+}
+
+for (cuenta in 3 downTo 1) {
+    println(cuenta)
+}`,
+      },
+      {
+        kind: 'tip',
+        text: '💡 Usa List cuando el tamaño pueda variar o necesites operaciones como filter y map. Usa Array cuando el tamaño sea fijo o una API lo requiera.',
+      },
+    ],
+  },
+
+  excepciones: {
+    type: 'lesson',
+    session: 'SESIÓN 5',
+    title: 'Manejo de Errores',
+    intro: 'Las excepciones representan fallos durante la ejecución. En Kotlin puedes capturarlas, producirlas y recuperar un valor alternativo.',
+    blocks: [
+      {
+        kind: 'code',
+        label: 'try como expresión',
+        code: `fun dividir(a: Int, b: Int): Int? {
+    return try {
+        a / b
+    } catch (e: ArithmeticException) {
+        println("No se puede dividir entre cero")
+        null
+    } finally {
+        println("Operación finalizada")
+    }
+}
+
+val resultado = dividir(10, 0) ?: 0`,
+      },
+      {
+        kind: 'code',
+        label: 'Validar y comunicar errores',
+        code: `fun aplicarDescuento(precio: Double, porcentaje: Int): Double {
+    require(precio >= 0) { "El precio no puede ser negativo" }
+    require(porcentaje in 0..100) { "Descuento fuera de rango" }
+
+    return precio * (1 - porcentaje / 100.0)
+}
+
+val resultado = runCatching { aplicarDescuento(500.0, 20) }
+    .onFailure { println("Error: \${it.message}") }
+    .getOrDefault(500.0)
+
+println(resultado) // 400.0`,
+      },
+      {
+        kind: 'tip',
+        text: '💡 Captura excepciones específicas y solo cuando puedas recuperarte. No uses try/catch para ocultar errores de programación.',
+      },
+    ],
+  },
+
+  'ejercicios-s5': {
+    type: 'exercise',
+    session: 'SESIÓN 5',
+    title: 'Ejercicios — Sesión 5',
+    exercises: [
+      {
+        id: 'ex5-1',
+        title: 'Promedio seguro',
+        description: 'Completa una función que reciba varias entradas de texto, ignore los valores no numéricos y devuelva el promedio. Si no hay números válidos, debe devolver 0.0.',
+        hint: 'Convierte cada texto con toDoubleOrNull(), elimina los null con mapNotNull() y verifica si la lista quedó vacía.',
+        starter: `fun promedioSeguro(entradas: List<String>): Double {
+    // Convierte, filtra y calcula el promedio
+    TODO()
+}
+
+fun main() {
+    val datos = listOf("10", "8.5", "error", "9")
+    println(promedioSeguro(datos))
+}`,
+        solution: `fun promedioSeguro(entradas: List<String>): Double {
+    val numeros = entradas.mapNotNull { it.toDoubleOrNull() }
+    return if (numeros.isEmpty()) 0.0 else numeros.average()
+}
+
+fun main() {
+    val datos = listOf("10", "8.5", "error", "9")
+    println(promedioSeguro(datos)) // 9.166666666666666
+}`,
+      },
+    ],
+  },
+
+  'scope-functions': {
+    type: 'lesson',
+    session: 'SESIÓN 6',
+    title: 'Scope Functions',
+    intro: 'let, run, with, apply y also ejecutan un bloque sobre un objeto. La diferencia está en cómo se nombra el objeto y qué valor retorna cada función.',
+    blocks: [
+      {
+        kind: 'table',
+        title: 'Cómo elegir una Scope Function',
+        headers: ['Función', 'Objeto dentro', 'Retorna', 'Uso común'],
+        rows: [
+          ['let', 'it', 'Resultado del bloque', 'Transformar o trabajar con nullable'],
+          ['run', 'this', 'Resultado del bloque', 'Configurar y calcular'],
+          ['with', 'this', 'Resultado del bloque', 'Agrupar llamadas sobre un objeto'],
+          ['apply', 'this', 'El mismo objeto', 'Configurar un objeto'],
+          ['also', 'it', 'El mismo objeto', 'Efecto adicional, como registrar'],
+        ],
+      },
+      {
+        kind: 'code',
+        label: 'Ejemplos prácticos',
+        code: `data class Perfil(var nombre: String = "", var ciudad: String = "")
+
+val perfil = Perfil().apply {
+    nombre = "Ana"
+    ciudad = "Puebla"
+}.also {
+    println("Perfil creado: $it")
+}
+
+val longitud = perfil.nombre.let { nombre ->
+    println(nombre.uppercase())
+    nombre.length
+}
+
+val ciudad: String? = "Mérida"
+ciudad?.let { println("Ciudad seleccionada: $it") }`,
+      },
+      {
+        kind: 'tip',
+        text: '💡 Las Scope Functions son útiles en bloques cortos. Si anidas varias, el código pierde claridad; en ese caso usa variables y funciones con nombres.',
+      },
+    ],
+  },
+
+  'enums-objects': {
+    type: 'lesson',
+    session: 'SESIÓN 6',
+    title: 'Enums y Objects',
+    intro: 'Los enum representan un conjunto fijo de opciones. object crea una única instancia, útil para configuraciones o servicios sin estado.',
+    blocks: [
+      {
+        kind: 'code',
+        label: 'Enum con propiedades',
+        code: `enum class Prioridad(val puntos: Int) {
+    BAJA(1),
+    MEDIA(2),
+    ALTA(3)
+}
+
+fun etiqueta(prioridad: Prioridad) = when (prioridad) {
+    Prioridad.BAJA -> "Puede esperar"
+    Prioridad.MEDIA -> "Importante"
+    Prioridad.ALTA -> "Urgente"
+}
+
+println(Prioridad.ALTA.puntos) // 3`,
+      },
+      {
+        kind: 'code',
+        label: 'Object declaration',
+        code: `object Configuracion {
+    const val NOMBRE_APP = "Mis Tareas"
+    var modoOscuro = true
+
+    fun descripcion() = "$NOMBRE_APP · oscuro: $modoOscuro"
+}
+
+println(Configuracion.descripcion())
+
+// Object anónimo para implementar una interfaz
+val accion = object : Runnable {
+    override fun run() = println("Ejecutando")
+}`,
+      },
+    ],
+  },
+
+  genericos: {
+    type: 'lesson',
+    session: 'SESIÓN 6',
+    title: 'Genéricos',
+    intro: 'Los genéricos permiten reutilizar clases y funciones con distintos tipos sin perder la seguridad que ofrece el compilador.',
+    blocks: [
+      {
+        kind: 'code',
+        label: 'Clases y funciones genéricas',
+        code: `data class Caja<T>(val valor: T)
+
+val cajaTexto = Caja("Kotlin")       // Caja<String>
+val cajaNumero = Caja(42)             // Caja<Int>
+
+fun <T> primeroOAlternativa(lista: List<T>, alternativa: T): T {
+    return lista.firstOrNull() ?: alternativa
+}
+
+println(primeroOAlternativa(listOf(7, 8), 0))
+println(primeroOAlternativa(emptyList<String>(), "Sin datos"))`,
+      },
+      {
+        kind: 'code',
+        label: 'Restricciones de tipo',
+        code: `fun <T : Comparable<T>> mayor(a: T, b: T): T {
+    return if (a >= b) a else b
+}
+
+println(mayor(10, 7))
+println(mayor("Kotlin", "Java"))`,
+      },
+      {
+        kind: 'tip',
+        text: '💡 List<String> y List<Int> usan la misma estructura genérica. T es un marcador que el compilador sustituye por el tipo concreto.',
+      },
+    ],
+  },
+
+  'paquetes-visibilidad': {
+    type: 'lesson',
+    session: 'SESIÓN 6',
+    title: 'Paquetes y Visibilidad',
+    intro: 'Los paquetes organizan el código. Los modificadores de visibilidad controlan qué partes pueden utilizarse desde otros archivos, clases o módulos.',
+    blocks: [
+      {
+        kind: 'table',
+        title: 'Modificadores de visibilidad',
+        headers: ['Modificador', 'Visible desde'],
+        rows: [
+          ['public', 'Cualquier lugar; es el valor por defecto'],
+          ['internal', 'El mismo módulo'],
+          ['protected', 'La clase y sus subclases'],
+          ['private', 'La clase o el archivo donde se declara'],
+        ],
+      },
+      {
+        kind: 'code',
+        label: 'Organizar archivos',
+        code: `// archivo: modelo/Usuario.kt
+package com.ejemplo.modelo
+
+data class Usuario(val nombre: String)
+
+internal fun validar(usuario: Usuario) = usuario.nombre.isNotBlank()
+
+// archivo: app/Main.kt
+package com.ejemplo.app
+
+import com.ejemplo.modelo.Usuario
+
+fun main() {
+    val usuario = Usuario("Ana")
+    println(usuario)
+}`,
+      },
+      {
+        kind: 'tip',
+        text: '💡 Evita hacer todo public por costumbre. Ocultar detalles internos reduce dependencias y facilita cambiar el código después.',
+      },
+    ],
+  },
+
+  'pruebas-basicas': {
+    type: 'lesson',
+    session: 'SESIÓN 6',
+    title: 'Pruebas Básicas',
+    intro: 'Una prueba automática ejecuta una pequeña parte del programa y comprueba que el resultado sea el esperado. Ayuda a detectar errores al hacer cambios.',
+    blocks: [
+      {
+        kind: 'code',
+        label: 'Primera prueba con kotlin.test',
+        code: `import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+
+fun sumar(a: Int, b: Int) = a + b
+
+class CalculadoraTest {
+    @Test
+    fun sumaDosNumeros() {
+        assertEquals(5, sumar(2, 3))
+    }
+
+    @Test
+    fun validaUnaPrecondicion() {
+        assertFailsWith<IllegalArgumentException> {
+            require(false) { "Dato inválido" }
+        }
+    }
+}`,
+      },
+      {
+        kind: 'table',
+        title: 'Patrón Arrange · Act · Assert',
+        headers: ['Paso', 'Qué haces'],
+        rows: [
+          ['Arrange', 'Preparas los datos y dependencias'],
+          ['Act', 'Ejecutas la función que quieres probar'],
+          ['Assert', 'Compruebas el resultado esperado'],
+        ],
+      },
+      {
+        kind: 'tip',
+        text: '💡 Empieza probando funciones pequeñas y puras: reciben datos, retornan un resultado y no dependen de la interfaz ni de la red.',
+      },
+    ],
+  },
+
+  'ejercicios-s6': {
+    type: 'exercise',
+    session: 'SESIÓN 6',
+    title: 'Ejercicios — Sesión 6',
+    exercises: [
+      {
+        id: 'ex6-1',
+        title: 'Respuesta genérica',
+        description: 'Crea una clase genérica Respuesta<T> con los estados Exito y Error. Después, escribe una función que muestre el dato cuando sea un éxito o el mensaje cuando sea un error.',
+        hint: 'Usa una sealed class genérica y un when exhaustivo. Exito necesita almacenar un valor de tipo T.',
+        starter: `sealed class Respuesta<out T> {
+    // Define Exito y Error
+}
+
+fun <T> mostrar(respuesta: Respuesta<T>) {
+    // Maneja ambos estados
+}
+
+fun main() {
+    mostrar(Respuesta.Exito("Perfil cargado"))
+    mostrar(Respuesta.Error("Sin conexión"))
+}`,
+        solution: `sealed class Respuesta<out T> {
+    data class Exito<T>(val dato: T) : Respuesta<T>()
+    data class Error(val mensaje: String) : Respuesta<Nothing>()
+}
+
+fun <T> mostrar(respuesta: Respuesta<T>) {
+    when (respuesta) {
+        is Respuesta.Exito -> println("Dato: \${respuesta.dato}")
+        is Respuesta.Error -> println("Error: \${respuesta.mensaje}")
+    }
+}
+
+fun main() {
+    mostrar(Respuesta.Exito("Perfil cargado"))
+    mostrar(Respuesta.Error("Sin conexión"))
 }`,
       },
     ],

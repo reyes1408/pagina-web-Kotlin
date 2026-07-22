@@ -106,3 +106,32 @@ body, #root {
 .text-2xl { font-size: calc(1.5rem * var(--font-scale)) !important; }
 .text-3xl { font-size: calc(1.875rem * var(--font-scale)) !important; }
 .text-4xl { font-size: calc(2.25rem * var(--font-scale)) !important; }
+
+/* Code block / editor light-mode overrides */
+html:not(.dark) .bg-navy-900,
+html:not(.dark) pre.bg-navy-900,
+html:not(.dark) .bg-navy-700,
+html:not(.dark) pre,
+html:not(.dark) textarea {
+  background-color: #f8fafc !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure text utility classes map to readable colors in light mode */
+html:not(.dark) .text-gray-200,
+html:not(.dark) .text-gray-300,
+html:not(.dark) .text-gray-400,
+html:not(.dark) .text-gray-500,
+html:not(.dark) .text-white {
+  color: var(--text-primary) !important;
+}
+
+html:not(.dark) .text-gray-400,
+html:not(.dark) .text-gray-500 {
+  color: var(--text-muted) !important;
+}
+
+html:not(.dark) .border-navy-600,
+html:not(.dark) .border-navy-500 {
+  border-color: var(--color-navy-600) !important;
+}

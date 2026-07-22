@@ -1,33 +1,54 @@
 import { useState, useCallback } from 'react';
 
-// Very lightweight Kotlin syntax highlighter (no external deps)
+// Very lightweight Kotlin syntax highlighter (no external deps).
+// It returns React nodes so highlighted markup is never processed as Kotlin text.
 function highlight(code) {
-  const keywords = ['fun', 'val', 'var', 'if', 'else', 'when', 'for', 'while', 'return',
+  const keywords = new Set(['fun', 'val', 'var', 'if', 'else', 'when', 'for', 'while', 'return',
     'class', 'object', 'interface', 'sealed', 'data', 'open', 'override', 'companion',
     'suspend', 'launch', 'async', 'await', 'flow', 'emit', 'collect', 'null', 'true',
     'false', 'is', 'as', 'in', 'out', 'by', 'get', 'set', 'init', 'constructor',
     'try', 'catch', 'finally', 'throw', 'import', 'package', 'private', 'public',
     'protected', 'internal', 'abstract', 'final', 'lateinit', 'by', 'delegate',
-  ];
+  ]);
 
-  return code
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    // Strings
-    .replace(/("""[\s\S]*?"""|"(?:[^"\\]|\\.)*")/g, '<span class="text-android-green">$1</span>')
-    // Comments
-    .replace(/(\/\/[^\n]*)/g, '<span class="text-gray-500 italic">$1</span>')
-    // Numbers
-    .replace(/\b(\d+(?:\.\d+)?[LfF]?)\b/g, '<span class="text-orange-400">$1</span>')
-    // Keywords
-    .replace(new RegExp(`\\b(${keywords.join('|')})\\b`, 'g'), '<span class="text-kotlin-purple font-semibold">$1</span>')
-    // Type annotations (capitalized words)
-    .replace(/\b([A-Z][a-zA-Z0-9]*)\b/g, '<span class="text-cyan-400">$1</span>')
-    // Function calls
-    .replace(/\b([a-z][a-zA-Z0-9]*)(\s*\()/g, '<span class="text-yellow-300">$1</span>$2')
-    // String interpolation
-    .replace(/(\$\{[^}]+\}|\$[a-zA-Z_][a-zA-Z0-9_]*)/g, '<span class="text-orange-300">$1</span>');
+  const tokenPattern = /("""[\s\S]*?"""|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)'|\/\/[^\n]*|\/\*[\s\S]*?\*\/|\b\d+(?:\.\d+)?[LfF]?\b|\b[A-Za-z_][A-Za-z0-9_]*\b)/g;
+  const nodes = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = tokenPattern.exec(code)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(code.slice(lastIndex, match.index));
+    }
+
+    const token = match[0];
+    let className = '';
+
+    if (token.startsWith('//') || token.startsWith('/*')) {
+      className = 'text-gray-500 italic';
+    } else if (token.startsWith('"') || token.startsWith("'")) {
+      className = 'text-android-green';
+    } else if (/^\d/.test(token)) {
+      className = 'text-orange-400';
+    } else if (keywords.has(token)) {
+      className = 'text-kotlin-purple font-semibold';
+    } else if (/^[A-Z]/.test(token)) {
+      className = 'text-cyan-400';
+    } else if (/^\s*\(/.test(code.slice(tokenPattern.lastIndex))) {
+      className = 'text-yellow-300';
+    }
+
+    nodes.push(className
+      ? <span key={`${match.index}-${token}`} className={className}>{token}</span>
+      : token);
+    lastIndex = tokenPattern.lastIndex;
+  }
+
+  if (lastIndex < code.length) {
+    nodes.push(code.slice(lastIndex));
+  }
+
+  return nodes;
 }
 
 export default function CodeBlock({ code, label }) {
@@ -64,10 +85,7 @@ export default function CodeBlock({ code, label }) {
 
       {/* Code */}
       <pre className="p-4 overflow-x-auto bg-navy-900 text-sm leading-relaxed">
-        <code
-          className="font-mono text-gray-200"
-          dangerouslySetInnerHTML={{ __html: highlight(code) }}
-        />
+        <code className="font-mono text-gray-200">{highlight(code)}</code>
       </pre>
     </div>
   );
