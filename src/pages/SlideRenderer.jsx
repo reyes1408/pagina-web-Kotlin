@@ -4,7 +4,7 @@ import CodeEditor from '../components/CodeEditor';
 // ── Intro page ───────────────────────────────────────────
 export function IntroPage({ slide }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-6">
+    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-0 sm:px-6">
       
       <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-kotlin-purple via-kotlin-violet to-kotlin-orange flex items-center justify-center mb-6 shadow-2xl shadow-kotlin-purple/40">
         <span className="text-4xl font-black text-white">K</span>
@@ -14,7 +14,7 @@ export function IntroPage({ slide }) {
         MÓDULO 01
       </div>
 
-      <h1 className="text-5xl font-black mb-3">
+      <h1 className="text-3xl sm:text-5xl font-black mb-3">
         <span className="text-white">Kotlin </span>
         <span className="bg-gradient-to-r from-kotlin-purple to-android-green bg-clip-text text-transparent">
           para Android
@@ -27,7 +27,7 @@ export function IntroPage({ slide }) {
       </p>
 
       {/* Topics grid */}
-      <div className="grid grid-cols-2 gap-2 max-w-2xl w-full mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-2xl w-full mb-8">
         {slide.topics.map((topic) => (
           <div
             key={topic}
@@ -52,7 +52,7 @@ export function LessonPage({ slide }) {
         </span>
       </div>
 
-      <h1 className="text-3xl font-black text-white mb-4">{slide.title}</h1>
+      <h1 className="text-2xl sm:text-3xl font-black text-white mb-4 break-words">{slide.title}</h1>
 
       {slide.intro && (
         <p className="text-gray-400 text-base leading-relaxed mb-6 max-w-2xl">
@@ -135,7 +135,7 @@ export function ExercisePage({ slide }) {
 
       <div className="space-y-10">
         {slide.exercises.map((ex, i) => (
-          <div key={ex.id} className="p-5 rounded-2xl bg-navy-700/50 border border-navy-600">
+          <div key={ex.id} className="p-4 sm:p-5 rounded-2xl bg-navy-700/50 border border-navy-600">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-6 h-6 rounded-full bg-kotlin-purple/30 border border-kotlin-purple/50 text-kotlin-purple text-xs font-bold flex items-center justify-center">
                 {i + 1}

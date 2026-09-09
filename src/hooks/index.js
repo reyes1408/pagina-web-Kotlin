@@ -69,7 +69,17 @@ export function useNavigation() {
 
 // ── Sidebar collapse hook ─────────────────────────────────
 export function useSidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => window.innerWidth >= 768);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 768px)');
+    const syncWithViewport = (event) => setIsOpen(event.matches);
+
+    desktop.addEventListener('change', syncWithViewport);
+    return () => desktop.removeEventListener('change', syncWithViewport);
+  }, []);
+
   const toggle = useCallback(() => setIsOpen(prev => !prev), []);
-  return { isOpen, toggle };
+  const close = useCallback(() => setIsOpen(false), []);
+  return { isOpen, toggle, close };
 }

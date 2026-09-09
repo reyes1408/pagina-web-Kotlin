@@ -27,13 +27,17 @@ function renderSlide(slide) {
 export default function App() {
   const { isDark, toggle: toggleTheme } = useTheme();
   const { fontSize, increase, decrease } = useFontSize();
-  const { isOpen, toggle: toggleSidebar } = useSidebar();
+  const { isOpen, toggle: toggleSidebar, close: closeSidebar } = useSidebar();
   const {
     currentTopic, goTo, goNext, goPrev,
     currentIndex, total, progress, hasNext, hasPrev,
   } = useNavigation();
 
   const currentSlide = slides[currentTopic];
+  const navigateFromSidebar = (id) => {
+    goTo(id);
+    if (window.innerWidth < 768) closeSidebar();
+  };
 
   return (
     <div
@@ -46,7 +50,6 @@ export default function App() {
         progress={progress}
         total={total}
         currentIndex={currentIndex}
-        fontSize={fontSize}
         onFontIncrease={increase}
         onFontDecrease={decrease}
         onSidebarToggle={toggleSidebar}
@@ -56,13 +59,14 @@ export default function App() {
         <Sidebar
           isOpen={isOpen}
           currentTopic={currentTopic}
-          onNavigate={goTo}
+          onNavigate={navigateFromSidebar}
+          onClose={closeSidebar}
         />
 
         <main
-          className={`flex-1 min-h-[calc(100vh-48px)] transition-all duration-300 ${isOpen ? 'ml-56' : 'ml-0'}`}
+          className={`min-w-0 flex-1 min-h-[calc(100vh-48px)] transition-[margin] duration-300 ${isOpen ? 'md:ml-56' : 'md:ml-0'}`}
         >
-          <div className="max-w-3xl mx-auto px-6 py-8">
+          <div className="w-full max-w-3xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
             {renderSlide(currentSlide)}
 
             <NavButtons

@@ -41,14 +41,22 @@ function SessionItem({ session, currentTopic, onNavigate }) {
   );
 }
 
-export default function Sidebar({ isOpen, currentTopic, onNavigate }) {
+export default function Sidebar({ isOpen, currentTopic, onNavigate, onClose }) {
   return (
-    <aside
-      className={`fixed top-12 left-0 bottom-0 z-40 overflow-y-auto transition-all duration-300
-        bg-navy-800 border-r border-navy-600
-        ${isOpen ? 'w-56' : 'w-0 overflow-hidden'}`}
-    >
-      <nav className="py-3 px-1 min-w-[224px]">
+    <>
+      <button
+        type="button"
+        aria-label="Cerrar menú"
+        onClick={onClose}
+        className={`fixed inset-0 top-12 z-30 bg-black/55 transition-opacity duration-300 md:hidden
+          ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      />
+      <aside
+        className={`fixed top-12 left-0 bottom-0 z-40 w-[min(18rem,85vw)] md:w-56 overflow-y-auto
+          bg-navy-800 border-r border-navy-600 transition-transform duration-300
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      >
+        <nav className="py-3 px-1 min-w-0">
         {modules.map(mod => {
           if (mod.type === 'intro') {
             const isActive = currentTopic === 'intro';
@@ -106,7 +114,8 @@ export default function Sidebar({ isOpen, currentTopic, onNavigate }) {
             </div>
           );
         })}
-      </nav>
-    </aside>
+        </nav>
+      </aside>
+    </>
   );
 }
